@@ -5,6 +5,30 @@ import { login } from "./actions";
 import { Button } from "@/components/ui/button";
 import Input from "@/components/ui/Input";
 
+/**
+ * This form uses useActionState to call a server action for user login
+ */
+/**
+ * About useActionSAtate()
+ * Is a hook that allows to update state on the onSubmit action of a form.
+ *
+ * Parameters:
+ *  fn: The function to be called when onSubmit, initially is given the
+ *      initialState and afterwards the previous state.
+ *  initialState: The value you want as an initialState.
+ *
+ * Returns:
+ *  state: First is the initialState, then the value returned by the fn.
+ *  fn:
+ *  isPending: I pending transition flag.
+ *
+ * - With react server functions in NextJS the server's response from
+ *   submitting the form will be shown even before hydration,
+ *   without is the same as component local state.
+ *
+ * - The function passed to useActionState receives an extra argument,
+ *   the previous or initial state, as its first argument.
+ */
 export default function LoginForm() {
   const [state, loginAction, isPending] = useActionState(login, undefined);
 

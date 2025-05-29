@@ -5,10 +5,16 @@ import { cookies } from "next/headers";
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
+/**
+ * The jose lib provides functionality for encrypting and decrypting tokens
+ * and for signing and verifying tokens
+ */
 export async function createSession(userId: string) {
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days to expire the token
+  const session = await encrypt({ userId, expiresAt }); // this is the JWT token
 
+  // Store the JWT in s HTTP-only cookie
+  // Visit console >> Application >> Cookies to see the "session" cookie with the JWT token.
   cookies().set("session", session, {
     httpOnly: true,
     secure: true,
