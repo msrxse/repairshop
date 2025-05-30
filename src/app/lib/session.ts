@@ -12,10 +12,11 @@ const encodedKey = new TextEncoder().encode(secretKey);
 export async function createSession(userId: string) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days to expire the token
   const session = await encrypt({ userId, expiresAt }); // this is the JWT token
+  const cookieStore = await cookies();
 
   // Store the JWT in s HTTP-only cookie
   // Visit console >> Application >> Cookies to see the "session" cookie with the JWT token.
-  cookies().set("session", session, {
+  cookieStore.set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -23,7 +24,9 @@ export async function createSession(userId: string) {
 }
 
 export async function deleteSession() {
-  cookies().delete("session");
+  const cookieStore = await cookies();
+
+  cookieStore.delete("session");
 }
 
 type SessionPayload = {
@@ -45,6 +48,7 @@ export async function decrypt(session: string | undefined = "") {
       algorithms: ["HS256"],
     });
     return payload;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.log("Failed to verify session");
   }
