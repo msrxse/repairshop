@@ -2,6 +2,7 @@ import { HomeIcon, File, UsersRound, LogOut } from "lucide-react";
 import Link from "next/link";
 
 import { NavButton } from "@/components/NavButton";
+import { logout } from "@/app/login/actions";
 
 export function Header() {
   return (
@@ -25,7 +26,7 @@ export function Header() {
           <NavButton href="/tickets" label="Tickets" icon={File} />
 
           <NavButton href="/customers" label="Customers" icon={UsersRound} />
-          <NavButton href="/login" label="Logout" icon={LogOut} />
+          <NavButton onClick={logout} label="Logout" icon={LogOut} />
         </div>
       </div>
     </header>

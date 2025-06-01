@@ -7,9 +7,9 @@ type Props = {
   icon: LucideIcon;
   label: string;
   href?: string;
-};
+} & React.HTMLAttributes<HTMLButtonElement>;
 
-export function NavButton({ icon: Icon, label, href }: Props) {
+export function NavButton({ icon: Icon, label, href, ...rest }: Props) {
   return (
     <Button
       variant="ghost"
@@ -18,6 +18,7 @@ export function NavButton({ icon: Icon, label, href }: Props) {
       title={label}
       className="rounded-full"
       asChild
+      {...rest}
     >
       {href ? (
         <Link href={href}>
