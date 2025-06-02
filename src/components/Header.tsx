@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { NavButton } from "@/components/NavButton";
 import { logout } from "@/app/login/actions";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export function Header() {
   return (
@@ -26,7 +27,15 @@ export function Header() {
           <NavButton href="/tickets" label="Tickets" icon={File} />
 
           <NavButton href="/customers" label="Customers" icon={UsersRound} />
-          <NavButton onClick={logout} label="Logout" icon={LogOut} />
+
+          <ModeToggle />
+
+          <NavButton
+            className="size-4 cursor-pointer m-2"
+            onClick={logout}
+            label="Logout"
+            icon={LogOut}
+          />
         </div>
       </div>
     </header>
