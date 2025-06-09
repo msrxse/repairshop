@@ -20,6 +20,22 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Authentication
+
+- This authentication setup implement a custom auth solution and is for educational purposes only. For increased security and simplicity, is always recommended to use an authentication library instead.
+
+- Here are the steps taken:
+
+  - The user submits their credentials through a form.
+  - The form sends a request that is handled by an API route.
+    Here we use useActionState(), passing it a server action and initialState, and it returns the action to use in your form, along with the latest state and the pending state of the form submission.
+  - Upon successful verification, the process is completed, indicating the user's successful authentication.
+    During verification, the hook allows the UI to have the latest state as given from the result of verifying the user. So the form can display errors and loading state right away. Also, useActionState allows the server response from submitting the form to be displayed even before hydration has completed.
+  - If verification is unsuccessful, an error message is shown.
+
+- On validation success, we want to create a session. In this case, that is to create an HTTP-only cookie storing a JWT token. We are using a stateless authentication and with the `jose` SignJWT function we are able to properly encrypt the user data into the JWT token. To decrypt we use jwtVerify from same library.
+- Here on onwards we use a NextJS middleware that runs on every request and checks the cookie. If the user has a session it is allowed to visit protected routes otherwise we redirect to the login page.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
