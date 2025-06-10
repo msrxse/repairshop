@@ -36,6 +36,48 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 - On validation success, we want to create a session. In this case, that is to create an HTTP-only cookie storing a JWT token. We are using a stateless authentication and with the `jose` SignJWT function we are able to properly encrypt the user data into the JWT token. To decrypt we use jwtVerify from same library.
 - Here on onwards we use a NextJS middleware that runs on every request and checks the cookie. If the user has a session it is allowed to visit protected routes otherwise we redirect to the login page.
 
+## Docker DB
+
+```
+docker run --name drizzle-postgres -e POSTGRES_PASSWORD=mypassword -d -p 5432:5432 postgres
+```
+
+## DB migrations
+
+- We are using a plain postgresql database on a docker container
+- Any changes to the schema and you need to create a db migration. Implies generating the SQL migration files based on your Drizzle schema and then apply those changes to your database.
+
+```
+npm run db:generate
+npm run db:migrate
+```
+
+## How to check postgres database in docker volume
+
+```
+docker ps // get container-id from output
+docker exec -it {CONTAINER _ID} psql -U {USERNAME} -d {postgres db name}
+```
+
+// for example: docker exec -it 6587f794d1ac psql -U postgres -d postgres
+
+```
+postgres=# show dbs
+postgres=# \q
+```
+
+## Seeding the DB
+
+```
+npx tsx src/db/seed.ts
+```
+
+or
+
+```
+bun tsx src/db/seed.ts
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
