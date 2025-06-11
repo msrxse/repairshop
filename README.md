@@ -78,17 +78,45 @@ or
 bun tsx src/db/seed.ts
 ```
 
-## Learn More
+## Ensure docker container in started
 
-To learn more about Next.js, take a look at the following resources:
+```
+docker start drizzle-postgres
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Accessing a PostgreSQL database within a Docker container
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+// to grab container_id
+docker ps
 
-## Deploy on Vercel
+// Access the docker container
+docker exec -it <container_id> bash
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+// Connect to the postgresql db
+psql -U <db_user> -d <db_name>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+// Navigate and inspect db
+\l  // list all dbs
+
+\c <database_name> // connect to a different db
+
+\dt // view tables on current db
+
+postgres=#  // this is the command prompt you should be seeing
+
+// Any SQL allowed now (see data folder for some seeding SQL)
+
+SELECT * FROM customers;
+SELECT * FROM tickets;
+
+\q // to quit psql
+
+exit // to exit the docker container prompt
+
+```
+
+Notes:
+
+- [See this link for all psql commands](https://tomcam.github.io/postgres/)
+- Once you have the command prompt you can run the SQL in the data folder. Or see the `Seed the DB` section here.
