@@ -52,20 +52,6 @@ npm run db:generate
 npm run db:migrate
 ```
 
-## How to check postgres database in docker volume
-
-```
-docker ps // get container-id from output
-docker exec -it {CONTAINER _ID} psql -U {USERNAME} -d {postgres db name}
-```
-
-// for example: docker exec -it 6587f794d1ac psql -U postgres -d postgres
-
-```
-postgres=# show dbs
-postgres=# \q
-```
-
 ## Seeding the DB
 
 ```
@@ -84,31 +70,34 @@ bun tsx src/db/seed.ts
 docker start drizzle-postgres
 ```
 
-## Accessing a PostgreSQL database within a Docker container
+## How to check postgres database in docker volume
 
 ```
-// to grab container_id
-docker ps
+docker ps // get container-id from output
 
-// Access the docker container
-docker exec -it <container_id> bash
+<!-- Access the docker container -->
+docker exec -it <CONTAINER _ID> bash
 
-// Connect to the postgresql db
+<!-- Connect to the postgresql db -->
 psql -U <db_user> -d <db_name>
 
-// Navigate and inspect db
+<!-- or all together -->
+<!-- docker exec -it {CONTAINER _ID} psql -U {USERNAME} -d {postgres db name} -->
+<!-- for example: docker exec -it 6587f794d1ac psql -U postgres -d postgres -->
+
+<!-- Navigate and inspect db -->
 \l  // list all dbs
 
-\c <database_name> // connect to a different db
+\c <DATABASE_NAME> // connect to a different db
 
 \dt // view tables on current db
 
 postgres=#  // this is the command prompt you should be seeing
 
-// Any SQL allowed now (see data folder for some seeding SQL)
+<!-- Any SQL allowed now (see data folder for some seeding SQL) -->
 
 SELECT * FROM customers;
-SELECT * FROM tickets;
+SELECT * FROM tickets; // press q to exit
 
 \q // to quit psql
 
