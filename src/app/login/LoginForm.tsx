@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { login } from "./actions";
 import { Button } from "@/components/ui/button";
-import Input from "@/components/ui/Input";
+import { Input } from "@/components/ui/input";
 
 /**
  * This form uses useActionState to call a server action for user login

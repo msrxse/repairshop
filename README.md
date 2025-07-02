@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+First, ensure docker container is running
+
+```
+docker start drizzle-postgres
+```
+
+then, run the development server:
 
 ```bash
 npm run dev
