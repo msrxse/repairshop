@@ -1,5 +1,5 @@
 import Form from "next/form";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/authInput";
 import SearchButton from "@/components/SearchButton";
 
 export default function TicketSearch() {
