@@ -14,13 +14,17 @@ import { Button } from "@/components/ui/button";
 import { InputWithLabel } from "@/components/inputs/InputWithLabel";
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
+import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 import { StatesArray } from "@/constants/StatesArray";
-
+import { usePermission } from "@/app/lib/usePermission";
 type Props = {
   customer?: selectCustomerSchemaType;
 };
 
 export default function CustomerForm({ customer }: Props) {
+  const { getPermission, isLoading } = usePermission();
+  const isManager = !isLoading && getPermission("manager");
+
   const defaultValues: insertCustomerSchemaType = {
     id: customer?.id ?? "(New)",
     firstName: customer?.firstName ?? "",
@@ -33,6 +37,7 @@ export default function CustomerForm({ customer }: Props) {
     phone: customer?.phone ?? "",
     email: customer?.email ?? "",
     notes: customer?.notes ?? "",
+    active: customer?.active ?? true,
   };
 
   const form = useForm<insertCustomerSchemaType>({
@@ -103,6 +108,15 @@ export default function CustomerForm({ customer }: Props) {
               nameInSchema="notes"
               className="h-40"
             />
+
+            {isManager && !isLoading && (
+              <CheckboxWithLabel<insertCustomerSchemaType>
+                fieldTitle="Active"
+                nameInSchema="active"
+                message="Yes"
+                disabled={!isManager} // Disable if not a manager
+              />
+            )}
 
             <div className="flex gap-2">
               <Button
