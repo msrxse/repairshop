@@ -109,12 +109,12 @@ export default function CustomerForm({ customer }: Props) {
               className="h-40"
             />
 
-            {isManager && !isLoading && (
+            {isManager && !isLoading && customer?.id && (
               <CheckboxWithLabel<insertCustomerSchemaType>
                 fieldTitle="Active"
                 nameInSchema="active"
                 message="Yes"
-                disabled={!isManager} // Disable if not a manager
+                disabled={!isManager}
               />
             )}
 

@@ -4,6 +4,24 @@ import { BackButton } from "@/components/BackButton";
 import TicketForm from "@/app/(rs)/tickets/form/TicketForm";
 import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
+  const { customerId, ticketId } = await searchParams;
+
+  if (!customerId && !ticketId) {
+    return { title: "Missing ticketId or customerId" };
+  }
+  if (customerId) {
+    return { title: `New Ticket for Customer #${customerId}` };
+  }
+  if (ticketId) {
+    return { title: `New Ticket #${ticketId}` };
+  }
+}
+
 export default async function TicketFormPage({
   searchParams,
 }: {
