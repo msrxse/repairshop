@@ -86,7 +86,9 @@ export default async function TicketFormPage({
 
         return <TicketForm customer={customer} ticket={ticket} techs={techs} />;
       } else {
-        const isEditable = currentUser.email === ticket.tech;
+        const isEditable =
+          currentUser.email?.toLowerCase() === ticket.tech.toLowerCase();
+
         return (
           <TicketForm
             customer={customer}

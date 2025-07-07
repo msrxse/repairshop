@@ -33,7 +33,7 @@ export default function TicketForm({
   techs,
   isEditable = true,
 }: Props) {
-  const isManager = Array.isArray(techs) && techs.length > 0;
+  const isManager = false;
 
   const defaultValues: insertTicketSchemaType = {
     id: ticket?.id ?? "(New)",
@@ -59,7 +59,11 @@ export default function TicketForm({
     <div className="flex flex-col gap-1 sm:px-8">
       <div>
         <h2 className="text-2xl font-bold">
-          {ticket?.id ? `Edit Ticket ID #${ticket.id}` : "New Ticket"}
+          {ticket?.id && isEditable
+            ? `Edit Ticket ID #${ticket.id}`
+            : ticket?.id
+            ? `View Ticket ID #${ticket.id}`
+            : "New Ticket"}
         </h2>
       </div>
       <Form {...form}>
