@@ -24,7 +24,7 @@ export default async function TicketFormPage({
     }
 
     const { getPermission, getUsers, currentUser } = getKindeAuthAPI();
-    const isManager = getPermission("manager");
+    const isManager = getPermission("manager").manager;
 
     // New ticket form
     if (customerId) {

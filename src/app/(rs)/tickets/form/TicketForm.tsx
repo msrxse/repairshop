@@ -33,7 +33,7 @@ export default function TicketForm({
   techs,
   isEditable = true,
 }: Props) {
-  const isManager = false;
+  const isManager = Array.isArray(techs) && techs.length > 0;
 
   const defaultValues: insertTicketSchemaType = {
     id: ticket?.id ?? "(New)",
