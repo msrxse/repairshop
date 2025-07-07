@@ -2,6 +2,7 @@ import { getCustomer } from "@/lib/queries/getCustomer";
 import { getTicket } from "@/lib/queries/getTicket";
 import { BackButton } from "@/components/BackButton";
 import TicketForm from "@/app/(rs)/tickets/form/TicketForm";
+import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 
 export default async function TicketFormPage({
   searchParams,
@@ -21,6 +22,9 @@ export default async function TicketFormPage({
         </>
       );
     }
+
+    const { getPermission, getUsers, currentUser } = getKindeAuthAPI();
+    const isManager = getPermission("manager");
 
     // New ticket form
     if (customerId) {
@@ -47,7 +51,17 @@ export default async function TicketFormPage({
       }
 
       // return ticket form
-      return <TicketForm customer={customer} />;
+      if (isManager) {
+        const users = getUsers();
+
+        const techs = users
+          ? users.map((user) => ({ id: user.email!, description: user.email! }))
+          : [];
+
+        return <TicketForm customer={customer} techs={techs} />;
+      } else {
+        return <TicketForm customer={customer} />;
+      }
     }
 
     if (ticketId) {
@@ -63,8 +77,24 @@ export default async function TicketFormPage({
       }
       const customer = await getCustomer(ticket.customerId);
 
-      // return ticket form
-      return <TicketForm customer={customer} ticket={ticket} />;
+      if (isManager) {
+        const users = getUsers();
+
+        const techs = users
+          ? users.map((user) => ({ id: user.email!, description: user.email! }))
+          : [];
+
+        return <TicketForm customer={customer} ticket={ticket} techs={techs} />;
+      } else {
+        const isEditable = currentUser.email === ticket.tech;
+        return (
+          <TicketForm
+            customer={customer}
+            ticket={ticket}
+            isEditable={isEditable}
+          />
+        );
+      }
     }
   } catch (error) {
     if (error instanceof Error) {

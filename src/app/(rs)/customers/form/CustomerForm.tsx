@@ -16,13 +16,13 @@ import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 import { StatesArray } from "@/constants/StatesArray";
-import { usePermission } from "@/app/lib/usePermission";
+import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 type Props = {
   customer?: selectCustomerSchemaType;
 };
 
 export default function CustomerForm({ customer }: Props) {
-  const { getPermission, isLoading } = usePermission();
+  const { getPermission, isLoading } = getKindeAuthAPI();
   const isManager = !isLoading && getPermission("manager");
 
   const defaultValues: insertCustomerSchemaType = {

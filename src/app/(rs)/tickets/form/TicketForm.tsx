@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { InputWithLabel } from "@/components/inputs/InputWithLabel";
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
-// import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
+import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 
 import {
   insertTicketSchema,
@@ -23,9 +23,18 @@ import {
 type Props = {
   customer: selectCustomerSchemaType;
   ticket?: selectTicketSchemaType;
+  techs?: { id: string; description: string }[];
+  isEditable?: boolean;
 };
 
-export default function TicketForm({ customer, ticket }: Props) {
+export default function TicketForm({
+  customer,
+  ticket,
+  techs,
+  isEditable = true,
+}: Props) {
+  const isManager = Array.isArray(techs) && techs.length > 0;
+
   const defaultValues: insertTicketSchemaType = {
     id: ticket?.id ?? "(New)",
     customerId: customer.id,
@@ -62,17 +71,37 @@ export default function TicketForm({ customer, ticket }: Props) {
             <InputWithLabel<insertTicketSchemaType>
               fieldTitle="Title"
               nameInSchema="title"
+              disabled={!isEditable}
             />
-            <InputWithLabel<insertTicketSchemaType>
-              fieldTitle="Tech"
-              nameInSchema="tech"
-              disabled
-            />
-            <CheckboxWithLabel<insertTicketSchemaType>
-              fieldTitle="Completed"
-              nameInSchema="completed"
-              message="Mark as completed"
-            />
+            {isManager ? (
+              <SelectWithLabel<insertTicketSchemaType>
+                fieldTitle="Tech ID"
+                nameInSchema="tech"
+                data={[
+                  {
+                    id: "new-ticket@example.com",
+                    description: "new-ticket@example.com",
+                  },
+                  ...(techs ?? []),
+                ]}
+              />
+            ) : (
+              <InputWithLabel<insertTicketSchemaType>
+                fieldTitle="Tech"
+                nameInSchema="tech"
+                disabled
+              />
+            )}
+
+            {ticket?.id ? (
+              <CheckboxWithLabel<insertTicketSchemaType>
+                fieldTitle="Completed"
+                nameInSchema="completed"
+                message="Mark as completed"
+                disabled={!isEditable}
+              />
+            ) : null}
+
             <div className="mt-4 space-y-2">
               <h3 className="text-lg">Customer Info</h3>
               <hr className="w-4/5" />
@@ -89,30 +118,34 @@ export default function TicketForm({ customer, ticket }: Props) {
               <p>Phone: {customer.phone}</p>
             </div>
           </div>
+          {/* Description and action buttons */}
           <div className="flex flex-col gap-4 w-full max-w-xs">
             <TextAreaWithLabel<insertTicketSchemaType>
               fieldTitle="description"
               nameInSchema="description"
               className="h-96"
+              disabled={!isEditable}
             />
-            <div className="flex gap-2">
-              <Button
-                type="submit"
-                className="w-3/4"
-                variant="default"
-                title="Save"
-              >
-                Save
-              </Button>
-              <Button
-                type="button"
-                variant="destructive"
-                title="Reset"
-                onClick={() => form.reset(defaultValues)}
-              >
-                Reset
-              </Button>
-            </div>
+            {isEditable ? (
+              <div className="flex gap-2">
+                <Button
+                  type="submit"
+                  className="w-3/4"
+                  variant="default"
+                  title="Save"
+                >
+                  Save
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  title="Reset"
+                  onClick={() => form.reset(defaultValues)}
+                >
+                  Reset
+                </Button>
+              </div>
+            ) : null}
           </div>
         </form>
       </Form>
