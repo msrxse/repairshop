@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormContext } from "react-hook-form";
+
 import {
   FormControl,
   FormField,
@@ -31,7 +32,7 @@ export function InputWithLabel<S>({
       name={nameInSchema}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-based" htmlFor={nameInSchema}>
+          <FormLabel className="text-base" htmlFor={nameInSchema}>
             {fieldTitle}
           </FormLabel>
 
@@ -39,10 +40,11 @@ export function InputWithLabel<S>({
             <Input
               id={nameInSchema}
               className={`w-full max-w-xs disabled:text-blue-500 dark:disabled:text-yellow-300 disabled:opacity-75 ${className}`}
-              {...field}
               {...props}
+              {...field}
             />
           </FormControl>
+
           <FormMessage />
         </FormItem>
       )}

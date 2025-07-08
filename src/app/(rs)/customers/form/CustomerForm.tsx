@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
 
 import {
   insertCustomerSchema,
@@ -20,6 +22,7 @@ import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 
 import { useAction } from "next-safe-action/hooks";
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
+import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
 
 type Props = {
   customer?: selectCustomerSchemaType;
@@ -30,7 +33,7 @@ export default function CustomerForm({ customer }: Props) {
   const isManager = !isLoading && getPermission("manager");
 
   const defaultValues: insertCustomerSchemaType = {
-    id: customer?.id ?? "(New)",
+    id: customer?.id ?? 0,
     firstName: customer?.firstName ?? "",
     lastName: customer?.lastName ?? "",
     address1: customer?.address1 ?? "",
@@ -57,22 +60,20 @@ export default function CustomerForm({ customer }: Props) {
     reset: resetSaveAction,
   } = useAction(saveCustomerAction, {
     onSuccess: ({ data }) => {
-      console.log("Customer saved successfully:", data);
-      // Toast user
+      toast.success(data.message);
     },
-    onError: (error) => {
-      console.error("Error saving customer:", error);
-      // Toast user about the error
+    onError: () => {
+      toast.error("Error saving customer");
     },
   });
 
   async function submitForm(data: insertCustomerSchemaType) {
-    console.log("Form submitted with data:", data);
-    // Handle form submission logic here, e.g., API call to save customer data
+    executeSave(data);
   }
 
   return (
     <div className="flex flex-col gap-1 sm:px-8">
+      <DisplayServerActionResponse result={saveResult} />
       <div>
         <h2 className="text-2xl font-bold">
           {customer?.id ? `Edit Customer ID #${customer.id}` : "New Customer"}
@@ -144,14 +145,25 @@ export default function CustomerForm({ customer }: Props) {
                 className="w-3/4"
                 variant="default"
                 title="Save"
+                disabled={isSaving}
               >
-                Save
+                {isSaving ? (
+                  <>
+                    <LoaderCircle className="animate-spin" />
+                    Saving
+                  </>
+                ) : (
+                  "Save"
+                )}
               </Button>
               <Button
                 type="button"
                 variant="destructive"
                 title="Reset"
-                onClick={() => form.reset(defaultValues)}
+                onClick={() => {
+                  form.reset(defaultValues);
+                  resetSaveAction();
+                }}
               >
                 Reset
               </Button>

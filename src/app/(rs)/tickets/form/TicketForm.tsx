@@ -36,7 +36,7 @@ export default function TicketForm({
   const isManager = Array.isArray(techs) && techs.length > 0;
 
   const defaultValues: insertTicketSchemaType = {
-    id: ticket?.id ?? "(New)",
+    id: ticket?.id ?? 0,
     customerId: customer.id,
     title: ticket?.title ?? "",
     description: ticket?.description ?? "",

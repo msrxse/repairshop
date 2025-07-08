@@ -9,6 +9,7 @@ export const actionClient = createSafeActionClient({
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handleServerError(e: Error, utils) {
+    // Sentry logging
     // const { clientInput, metadata } = utils;
     // Sentry.captureException(e, (scope) => {
     //   scope.clear();
@@ -17,9 +18,11 @@ export const actionClient = createSafeActionClient({
     //   scope.setContext("clientInput", { clientInput });
     //   return scope;
     // });
-    // if (e.constructor.name === "NeonDbError") {
-    //   return "Database Error: Your data did not save. Support will be notified.";
-    // }
+
+    if (e.constructor.name === "NeonDbError") {
+      return "Database Error: Your data did not save. Support will be notified.";
+    }
+
     return e.message;
   },
 });
