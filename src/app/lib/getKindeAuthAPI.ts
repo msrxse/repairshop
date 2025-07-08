@@ -39,5 +39,6 @@ export function getKindeAuthAPI() {
       email: "john.doe@example.com",
     },
     isLoading: false, // Placeholder for loading state, can be replaced with actual loading logic
+    isAuthenticated: () => true, // Placeholder for authentication state, can be replaced with actual auth logic
   };
 }

@@ -17,6 +17,10 @@ import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 import { StatesArray } from "@/constants/StatesArray";
 import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
+
+import { useAction } from "next-safe-action";
+import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
+
 type Props = {
   customer?: selectCustomerSchemaType;
 };
@@ -44,6 +48,22 @@ export default function CustomerForm({ customer }: Props) {
     mode: "onBlur",
     resolver: zodResolver(insertCustomerSchema),
     defaultValues,
+  });
+
+  const {
+    execute: executeSave,
+    result: saveResult,
+    isExecuting: isSaving,
+    reset: resetSaveAction,
+  } = useAction(saveCustomerAction, {
+    onSuccess: ({ data }) => {
+      console.log("Customer saved successfully:", data);
+      // Toast user
+    },
+    onError: (error) => {
+      console.error("Error saving customer:", error);
+      // Toast user about the error
+    },
   });
 
   async function submitForm(data: insertCustomerSchemaType) {
