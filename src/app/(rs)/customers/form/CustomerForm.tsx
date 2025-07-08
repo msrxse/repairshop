@@ -3,9 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { toast } from "sonner";
-import { LoaderCircle } from "lucide-react";
-
 import {
   insertCustomerSchema,
   type insertCustomerSchemaType,
@@ -20,6 +17,8 @@ import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 import { StatesArray } from "@/constants/StatesArray";
 import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
 import { DisplayServerActionResponse } from "@/components/DisplayServerActionResponse";
@@ -56,11 +55,13 @@ export default function CustomerForm({ customer }: Props) {
   const {
     execute: executeSave,
     result: saveResult,
-    isExecuting: isSaving,
+    isPending: isSaving,
     reset: resetSaveAction,
   } = useAction(saveCustomerAction, {
     onSuccess: ({ data }) => {
-      toast.success(data.message);
+      if (data?.message) {
+        toast.success(data.message);
+      }
     },
     onError: () => {
       toast.error("Error saving customer");
