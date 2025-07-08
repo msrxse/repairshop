@@ -18,7 +18,7 @@ import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 import { StatesArray } from "@/constants/StatesArray";
 import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 
-import { useAction } from "next-safe-action";
+import { useAction } from "next-safe-action/hooks";
 import { saveCustomerAction } from "@/app/actions/saveCustomerAction";
 
 type Props = {
