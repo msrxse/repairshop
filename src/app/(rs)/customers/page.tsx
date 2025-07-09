@@ -11,7 +11,6 @@ export const metadata = {
  * this form `src/app/(rs)/customers/CustomerSearch.tsx`.
  * See <From component where action="/customers", meaning the form redirects here with those params.
  *
- *
  */
 async function Page({
   searchParams,
