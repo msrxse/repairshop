@@ -1,4 +1,5 @@
 import CustomerSearch from "@/app/(rs)/customers/CustomerSearch";
+import CustomerTable from "@/app/(rs)/customers/CustomerTable";
 import { getCustomerSearchResults } from "@/lib/queries/getCustomerSearchResults";
 
 export const metadata = {
@@ -12,7 +13,7 @@ export const metadata = {
  * See <From component where action="/customers", meaning the form redirects here with those params.
  *
  */
-async function Page({
+async function Customers({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -28,9 +29,13 @@ async function Page({
   return (
     <>
       <CustomerSearch />
-      <p>{JSON.stringify(results)}</p>
+      {results.length ? (
+        <CustomerTable data={results} />
+      ) : (
+        <p className="mt-4">No results found</p>
+      )}
     </>
   );
 }
 
-export default Page;
+export default Customers;
