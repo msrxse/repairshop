@@ -29,7 +29,7 @@ import {
   ArrowDown,
 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { usePolling } from "@/hooks/usePolling";
 import { Button } from "@/components/ui/button";
 import Filter from "@/components/react-table/Filter";
@@ -158,6 +158,22 @@ export default function TicketTable({ data }: Props) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getSortedRowModel: getSortedRowModel(),
   });
+
+  /**
+   * Will remove any previous pagination when doing a column filter
+   *  - since the pagination otherwise will get out of sync
+   */
+  useEffect(() => {
+    const currentPageIndex = table.getState().pagination.pageIndex;
+    const pageCount = table.getPageCount();
+    if (pageCount <= currentPageIndex && currentPageIndex > 0) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", "1");
+      router.replace(`?${params.toString()}`, { scroll: false });
+    }
+    // only really care for any change in the filters
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table.getState().columnFilters]);
 
   return (
     <div className="mt-6 flex flex-col gap-4">

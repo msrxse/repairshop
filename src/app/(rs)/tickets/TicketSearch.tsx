@@ -12,6 +12,7 @@ export default function TicketSearch() {
         name="searchText"
         placeholder="Search Tickets"
         className="w-full"
+        autoFocus
       />
       <SearchButton />
     </Form>
