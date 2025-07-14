@@ -1,6 +1,7 @@
 import { getCustomer } from "@/lib/queries/getCustomer";
 import { BackButton } from "@/components/BackButton";
 import CustomerForm from "@/app/(rs)/customers/form/CustomerForm";
+import { getKindeAuthAPI } from "@/app/lib/getKindeAuthAPI";
 
 export async function generateMetadata({
   searchParams,
@@ -22,6 +23,9 @@ export default async function CustomerFormPage({
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }) {
   try {
+    const { getPermission } = getKindeAuthAPI();
+    const isManager = getPermission("manager").manager;
+
     const { customerId } = await searchParams;
 
     // Edit customer form
@@ -40,10 +44,10 @@ export default async function CustomerFormPage({
       }
 
       // If customer exists, render the form with customer data
-      return <CustomerForm customer={customer} />;
+      return <CustomerForm isManager={isManager} customer={customer} />;
     } else {
       // new form component
-      return <CustomerForm />;
+      return <CustomerForm isManager={isManager} />;
     }
   } catch (error) {
     if (error instanceof Error) {
