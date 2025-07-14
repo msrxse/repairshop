@@ -70,6 +70,10 @@ export default function CustomerForm({ customer, isManager = false }: Props) {
     defaultValues,
   });
 
+  /**
+   * We want to customer form to be black when navigating it,
+   * if we have displayed to edit a customers those values would have stayed there
+   */
   useEffect(() => {
     form.reset(hasCustomerId ? defaultValues : emptyValues);
     // only interested on changes to this variable

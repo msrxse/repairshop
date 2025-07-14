@@ -44,10 +44,16 @@ export default async function CustomerFormPage({
       }
 
       // If customer exists, render the form with customer data
-      return <CustomerForm isManager={isManager} customer={customer} />;
+      return (
+        <CustomerForm
+          key={customerId} // will force component to remount (as when hitting back button)
+          isManager={isManager}
+          customer={customer}
+        />
+      );
     } else {
       // new form component
-      return <CustomerForm isManager={isManager} />;
+      return <CustomerForm key={customerId} isManager={isManager} />;
     }
   } catch (error) {
     if (error instanceof Error) {
