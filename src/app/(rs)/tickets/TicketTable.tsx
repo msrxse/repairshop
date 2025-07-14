@@ -47,7 +47,7 @@ export default function TicketTable({ data }: Props) {
     { id: "ticketDate", desc: false }, // false for ascending,
   ]);
 
-  usePolling(10000, searchParams.get("searchText")); // 10 seconds
+  usePolling(300000, searchParams.get("searchText")); //  5 minutes
   const pageIndex = useMemo(() => {
     const page = searchParams.get("page");
     return page ? parseInt(page) - 1 : 0;
@@ -65,6 +65,15 @@ export default function TicketTable({ data }: Props) {
     "email",
     "completed",
   ];
+
+  const columnsWidths = {
+    completed: 150,
+    ticketDate: 150,
+    title: 250,
+    tech: 225,
+    email: 225,
+  };
+
   const columnHelper = createColumnHelper<RowType>();
   const columns = columnHeadersArray.map((columnName) => {
     // transformational
@@ -85,6 +94,8 @@ export default function TicketTable({ data }: Props) {
       },
       {
         id: columnName,
+        size:
+          columnsWidths[columnName as keyof typeof columnsWidths] ?? undefined,
         header: ({ column }) => {
           return (
             <Button
@@ -157,7 +168,11 @@ export default function TicketTable({ data }: Props) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="bg-secondary p-1">
+                    <TableHead
+                      key={header.id}
+                      className="bg-secondary p-1"
+                      style={{ width: header.getSize() }}
+                    >
                       <div>
                         {header.isPlaceholder
                           ? null
@@ -168,7 +183,14 @@ export default function TicketTable({ data }: Props) {
                       </div>
                       {header.column.getCanFilter() ? (
                         <div className="grid place-content-center">
-                          <Filter column={header.column} />
+                          <Filter
+                            column={header.column}
+                            filteredRows={table
+                              .getFilteredRowModel()
+                              .rows.map((row) =>
+                                row.getValue(header.column.id)
+                              )}
+                          />
                         </div>
                       ) : null}
                     </TableHead>
