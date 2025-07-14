@@ -1,5 +1,6 @@
 import { createSafeActionClient } from "next-safe-action";
 import { z } from "zod";
+import { DrizzleQueryError } from "drizzle-orm/errors";
 
 export const actionClient = createSafeActionClient({
   defineMetadataSchema() {
@@ -8,18 +9,28 @@ export const actionClient = createSafeActionClient({
     });
   },
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  handleServerError(e: Error, utils) {
-    // Sentry logging
-    // const { clientInput, metadata } = utils;
-    // Sentry.captureException(e, (scope) => {
-    //   scope.clear();
-    //   scope.setContext("serverError", { message: e.message });
-    //   scope.setContext("metadata", { actionName: metadata?.actionName });
-    //   scope.setContext("clientInput", { clientInput });
-    //   return scope;
-    // });
+  handleServerError(e, utils) {
+    // const { clientInput, metadata } = utils
 
-    if (e.constructor.name === "NeonDbError") {
+    if (e instanceof DrizzleQueryError) {
+      const { code, detail } = e.cause;
+
+      if (code === "23505") {
+        // feedback displayed for user
+        // Wont be reported to Sentry!
+        return `Unique entry required. ${detail}`;
+      }
+    }
+
+    // Sentry.captureException(e, (scope) => {
+    //     scope.clear()
+    //     scope.setContext('serverError', { message: e.message })
+    //     scope.setContext('metadata', { actionName: metadata?.actionName })
+    //     scope.setContext('clientInput', { clientInput })
+    //     return scope
+    // })
+
+    if (e instanceof DrizzleQueryError) {
       return "Database Error: Your data did not save. Support will be notified.";
     }
 
