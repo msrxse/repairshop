@@ -1,4 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js Full Stack Project
+
+This full stack app will include Next.js, TypeScript, Tailwind CSS, ShadCN/ui, a dockerized Postgres DB, Drizzle ORM, Zod, next-safe-action, react-hook-form, next-safe-action, and TanStack Table.
+
+Scenes:
+
+- Customer Search
+  <img src="assets/Customer Search.jpeg" width="800" />
+- New Customer
+  <img src="assets/New Customer.jpeg" width="800" />
+
+- Tickets List
+  <img src="assets/Ticket Search.jpeg" width="800" />
+
+- New Tickets
+  <img src="assets/New Ticket.jpeg" width="800" />
 
 ## Getting Started
 
