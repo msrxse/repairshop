@@ -66,7 +66,7 @@ export async function login(prevState: LoginState, formData: FormData) {
   // Here we get a session stored in a cookie, meaning out user is not authenticated
   await createSession(testUser.id);
 
-  redirect("/home");
+  redirect("/tickets");
 }
 
 export async function logout() {

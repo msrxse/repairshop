@@ -73,10 +73,15 @@ export default async function TicketFormPage({
         const users = getUsers();
 
         const techs = users
-          ? users.map((user) => ({
-              id: user.email?.toLowerCase(),
-              description: user.email?.toLowerCase(),
-            }))
+          ? users
+              .filter(
+                (user): user is { id: number; name: string; email: string } =>
+                  typeof user.email === "string"
+              )
+              .map((user) => ({
+                id: user.email?.toLowerCase(),
+                description: user.email?.toLowerCase(),
+              }))
           : [];
 
         return (

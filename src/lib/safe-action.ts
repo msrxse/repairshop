@@ -13,7 +13,9 @@ export const actionClient = createSafeActionClient({
     // const { clientInput, metadata } = utils
 
     if (e instanceof DrizzleQueryError) {
-      const { code, detail } = e.cause;
+      const cause = e.cause as { code?: string; detail?: string } | undefined;
+      const code = cause?.code;
+      const detail = cause?.detail;
 
       if (code === "23505") {
         // feedback displayed for user
