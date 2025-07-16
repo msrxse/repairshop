@@ -8,10 +8,8 @@ Scenes:
   <img src="assets/Customer Search.jpeg" width="800" />
 - New Customer
   <img src="assets/New Customer.jpeg" width="800" />
-
 - Tickets List
   <img src="assets/Ticket Search.jpeg" width="800" />
-
 - New Tickets
   <img src="assets/New Ticket.jpeg" width="800" />
 
